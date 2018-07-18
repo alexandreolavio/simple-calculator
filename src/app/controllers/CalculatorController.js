@@ -73,16 +73,21 @@ class CalculatorController {
 
       switch (e.key) {
         case 'Escape':
+          this._clearAll();
           break;
         case 'Backspace':
+          this._clearEntry();
           break;
         case 'Enter':
         case '=':
+          this._calculate();
           break;
         case '.':
         case ',':
+          this._addDot();
           break;
         default:
+          this._addOperation(_mapOperations.get(e.key) || e.key);
           break;
       }
     });
