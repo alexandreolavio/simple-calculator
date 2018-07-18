@@ -13,6 +13,7 @@ export default class CalculatorController {
   initialize() {
     this._scheduleDisplayDateTime();
     this._initButtonEvents();
+    this._initKeyboardEvents();
   }
 
   _scheduleDisplayDateTime() {
@@ -45,6 +46,27 @@ export default class CalculatorController {
 
   _addEventListenerAll(element, events, fn) {
     events.split(' ').forEach(event => element.addEventListener(event.trim(), fn, false));
+  }
+
+  _initKeyboardEvents() {
+    document.addEventListener('keyup', (e) => {
+      console.log(e.key);
+
+      switch (e.key) {
+        case 'Escape':
+          break;
+        case 'Backspace':
+          break;
+        case 'Enter':
+        case '=':
+          break;
+        case '.':
+        case ',':
+          break;
+        default:
+          break;
+      }
+    });
   }
 }
 
