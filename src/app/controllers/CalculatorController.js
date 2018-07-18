@@ -19,9 +19,13 @@ const _mapOperations = new Map()
   .set('multiplicacao', '*')
   .set('porcento', '%');
 
+const _operators = new Set(_mapOperations.values());
+
 class CalculatorController {
   constructor() {
     this._operation = [];
+    this._lastOperator = '';
+    this._lastNumber = '';
   }
 
   initialize() {
@@ -29,28 +33,6 @@ class CalculatorController {
     this._initButtonEvents();
     this._initKeyboardEvents();
     this._initAudioButtonEvent();
-  }
-
-  _execBtn(value) {
-    _audio.play();
-
-    switch (value) {
-      case 'ac':
-        break;
-      case 'ce':
-        break;
-      case 'ponto':
-        break;
-      case 'igual':
-        break;
-      default:
-        this._addOperation(_mapOperations.get(value) || value);
-        break;
-    }
-  }
-
-  _addOperation(value) {
-    _calcView.update(value);
   }
 
   _scheduleDisplayDateTime() {
@@ -112,6 +94,79 @@ class CalculatorController {
         _audio.enable = !_audio.enable;
       });
     });
+  }
+
+  _execBtn(value) {
+    _audio.play();
+
+    switch (value) {
+      case 'ac':
+        break;
+      case 'ce':
+        break;
+      case 'ponto':
+        break;
+      case 'igual':
+        break;
+      default:
+        this._addOperation(_mapOperations.get(value) || value);
+        break;
+    }
+  }
+
+  _addOperation(value) {
+    if (isNaN(this._lastOperation)) {
+      if (this._isOperator(value)) {
+        this._lastOperation = value;
+      } else {
+        this._pushOperation(parseInt(value, 10));
+        this._setLastNumberToDisplay();
+      }
+    } else if (this._isOperator(value)) {
+      this._pushOperation(value);
+    } else {
+      this._lastOperation = `${this._lastOperation}${value}`;
+
+      this._setLastNumberToDisplay();
+    }
+  }
+
+  _isOperator(value) {
+    return _operators.has(value);
+  }
+
+  _pushOperation(value) {
+    this._operation.push(value);
+  }
+
+  _setLastNumberToDisplay() {
+    let lastNumber = this._getLastItem(false);
+    if (!lastNumber) lastNumber = 0;
+
+    _calcView.update(lastNumber);
+  }
+
+  _getLastItem(isOperator = true) {
+    let lastItem;
+
+    for (const op of this._operation.slice(0).reverse()) {
+      if (this._isOperator(op) === isOperator) {
+        lastItem = op;
+        break;
+      }
+    }
+
+    if (!lastItem) lastItem = (isOperator) ? this._lastOperator : this._lastNumber;
+
+    return lastItem;
+  }
+
+  get _lastOperation() {
+    return this._operation[this._operation.length - 1];
+  }
+
+  set _lastOperation(value) {
+    this._operation[this._operation.length - 1] = value;
   }
 }
 
