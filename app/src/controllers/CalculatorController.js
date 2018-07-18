@@ -9,7 +9,8 @@ const _dataView = new DisplayDateView($('#data'));
 const _timeView = new DisplayTimeView($('#hora'));
 
 export default class CalculatorController {
-  constructor() {
+
+  initialize() {
     this._scheduleDisplayDateTime();
     this._initButtonEvents();
   }
@@ -46,3 +47,8 @@ export default class CalculatorController {
     events.split(' ').forEach(event => element.addEventListener(event.trim(), fn, false));
   }
 }
+
+const instance = new CalculatorController();
+const initialize = instance.initialize.bind(instance);
+
+export { initialize };

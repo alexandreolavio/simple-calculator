@@ -1,3 +1,3 @@
-import CalculatorController from './controllers/CalculatorController';
+import { initialize } from './controllers/CalculatorController';
 
-const calc = new CalculatorController();
+initialize();
