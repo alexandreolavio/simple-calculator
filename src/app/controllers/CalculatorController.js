@@ -67,32 +67,6 @@ class CalculatorController {
     events.split(' ').forEach(event => element.addEventListener(event.trim(), fn, false));
   }
 
-  _initKeyboardEvents() {
-    document.addEventListener('keyup', (e) => {
-      _audio.play();
-
-      switch (e.key) {
-        case 'Escape':
-          this._clearAll();
-          break;
-        case 'Backspace':
-          this._clearEntry();
-          break;
-        case 'Enter':
-        case '=':
-          this._calculate();
-          break;
-        case '.':
-        case ',':
-          this._addDot();
-          break;
-        default:
-          this._addOperation(_mapOperations.get(e.key) || e.key);
-          break;
-      }
-    });
-  }
-
   _initAudioButtonEvent() {
     $All('.btn-ac').forEach((btn) => {
       btn.addEventListener('dblclick', () => {
@@ -101,19 +75,36 @@ class CalculatorController {
     });
   }
 
+  _initKeyboardEvents() {
+    document.addEventListener('keyup', (e) => {
+      _audio.play();
+      this._execEvent(e.key);
+    });
+  }
+
   _execBtn(value) {
     _audio.play();
 
+    this._execEvent(value);
+  }
+
+  _execEvent(value) {
     switch (value) {
+      case 'Escape':
       case 'ac':
         this._clearAll();
         break;
+      case 'Backspace':
       case 'ce':
         this._clearEntry();
         break;
+      case '.':
+      case ',':
       case 'ponto':
         this._addDot();
         break;
+      case 'Enter':
+      case '=':
       case 'igual':
         this._calculate();
         break;
