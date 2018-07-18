@@ -4,10 +4,10 @@ import DisplayTimeView from '../views/DisplayTimeView';
 import DateTimeHelper from '../helpers/DateTimeHelper';
 import AudioModel from '../models/AudioModel';
 
-const _audio = new AudioModel('../../../sounds/click.mp3');
 const $ = document.querySelector.bind(document);
 const $All = document.querySelectorAll.bind(document);
 
+const _audio = new AudioModel('../../../sounds/click.mp3');
 const _calcView = new DisplayCalculatorView($('#display'));
 const _dataView = new DisplayDateView($('#data'));
 const _timeView = new DisplayTimeView($('#hora'));
@@ -109,6 +109,7 @@ class CalculatorController {
       case 'ponto':
         break;
       case 'igual':
+        this._calculate();
         break;
       default:
         this._addOperation(_mapOperations.get(value) || value);
@@ -139,6 +140,8 @@ class CalculatorController {
 
   _pushOperation(value) {
     this._operation.push(value);
+
+    if (this._operation.length > 3) this._calculate();
   }
 
   _updateDisplayCalcView() {
@@ -173,6 +176,39 @@ class CalculatorController {
   _clearEntry() {
     this._operation.pop();
     this._updateDisplayCalcView();
+  }
+
+  _calculate() {
+    let last = '';
+    this._lastOperator = this._getLastItem();
+
+    if (this._operation.length > 3) {
+      last = this._operation.pop();
+      this._lastNumber = this._getResult();
+    } else if (this._operation.length === 3) {
+      this._lastNumber = this._getLastItem(false);
+    } else {
+      const firstItem = this._operation[0];
+      this._operation = [firstItem, this._lastOperator, this._lastNumber];
+    }
+
+    let result = this._getResult();
+    this._operation = [(last === '%') ? result /= 100 : result];
+
+    if (last) this._operation.push(last);
+
+    this._updateDisplayCalcView();
+  }
+
+  _getResult() {
+    try {
+      return eval(this._operation.join(''));
+    } catch (error) {
+      setTimeout(() => {
+        _calcView.update('Error');
+      }, 1);
+    }
+    return 0;
   }
 
   get _lastOperation() {
