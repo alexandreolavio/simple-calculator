@@ -12,6 +12,13 @@ const _calcView = new DisplayCalculatorView($('#display'));
 const _dataView = new DisplayDateView($('#data'));
 const _timeView = new DisplayTimeView($('#hora'));
 
+const _mapOperations = new Map()
+  .set('soma', '+')
+  .set('subtracao', '-')
+  .set('divisao', '/')
+  .set('multiplicacao', '*')
+  .set('porcento', '%');
+
 class CalculatorController {
   constructor() {
     this._operation = [];
@@ -37,8 +44,13 @@ class CalculatorController {
       case 'igual':
         break;
       default:
+        this._addOperation(_mapOperations.get(value) || value);
         break;
     }
+  }
+
+  _addOperation(value) {
+    _calcView.update(value);
   }
 
   _scheduleDisplayDateTime() {
