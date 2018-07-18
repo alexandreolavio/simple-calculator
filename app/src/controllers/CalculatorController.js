@@ -9,7 +9,15 @@ const _timeView = new DisplayTimeView($('#hora'));
 
 export default class CalculatorController {
   constructor() {
+    this._scheduleDisplayDateTime();
+  }
+
+  _scheduleDisplayDateTime() {
     this._setDisplayDateTime();
+
+    setInterval(() => {
+      this._setDisplayDateTime();
+    }, 1000);
   }
 
   _setDisplayDateTime() {
