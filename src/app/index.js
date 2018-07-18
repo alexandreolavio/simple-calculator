@@ -1,3 +1,3 @@
-import { initialize } from './controllers/CalculatorController';
+import initialize from './controllers/CalculatorController';
 
 initialize();

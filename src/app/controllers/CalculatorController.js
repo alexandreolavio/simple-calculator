@@ -1,3 +1,4 @@
+import DisplayCalculatorView from '../views/DisplayCalculatorView';
 import DisplayDateView from '../views/DisplayDateView';
 import DisplayTimeView from '../views/DisplayTimeView';
 import DateTimeHelper from '../helpers/DateTimeHelper';
@@ -7,10 +8,14 @@ const _audio = new AudioModel('../../../sounds/click.mp3');
 const $ = document.querySelector.bind(document);
 const $All = document.querySelectorAll.bind(document);
 
+const _calcView = new DisplayCalculatorView($('#display'));
 const _dataView = new DisplayDateView($('#data'));
 const _timeView = new DisplayTimeView($('#hora'));
 
-export default class CalculatorController {
+class CalculatorController {
+  constructor() {
+    this._operation = [];
+  }
 
   initialize() {
     this._scheduleDisplayDateTime();
@@ -93,8 +98,6 @@ export default class CalculatorController {
     $All('.btn-ac').forEach((btn) => {
       btn.addEventListener('dblclick', () => {
         _audio.enable = !_audio.enable;
-
-        console.log(_audio.enable);
       });
     });
   }
@@ -103,4 +106,4 @@ export default class CalculatorController {
 const instance = new CalculatorController();
 const initialize = instance.initialize.bind(instance);
 
-export { initialize };
+export default initialize;
