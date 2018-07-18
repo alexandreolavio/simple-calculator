@@ -8,9 +8,8 @@
     "prepush": "npm run lint",
     "lint": "./node_modules/.bin/eslint app/**/*.js",
     "build": "npm run clear && babel app/src -d bundle --source-maps",
-    "build:prod": "npm run clear && babel app/src -p bundle --source-maps",
     "watch": "npm run build -- --watch",
-    "start": "http-server"
+    "start": "npm run build && http-server"
   },
   "repository": {
     "type": "git",
