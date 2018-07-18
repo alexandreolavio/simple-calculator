@@ -7,15 +7,17 @@
     "clear": "rimraf app/bundle",
     "prepush": "npm run lint",
     "lint": "./node_modules/.bin/eslint app/**/*.js",
-    "build": "npm run clear && babel app/src -d app/bundle --source-maps",
-    "build:prod": "npm run clear && babel app/src -p app/bundle --source-maps",
-    "watch": "npm run build -- --watch"
+    "build": "npm run clear && babel app/src -d bundle --source-maps",
+    "build:prod": "npm run clear && babel app/src -p bundle --source-maps",
+    "watch": "npm run build -- --watch",
+    "start": "http-server"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alexandreolavio/simple-calculator.git"
   },
   "keywords": [
+    "html",
     "js",
     "library"
   ],
@@ -37,5 +39,8 @@
     "jsdom": "^11.0.0",
     "jsdom-global": "^3.0.2",
     "rimraf": "^2.6.1"
+  },
+  "dependencies": {
+    "systemjs": "^0.19.47"
   }
 }

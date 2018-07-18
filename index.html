@@ -1585,5 +1585,14 @@
         </svg>
       </div>
     </div>
+
+    <script src="./node_modules/systemjs/dist/system.js"></script>
+    <script>
+        System.defaultJSExtensions = true;
+        System.import('./bundle/index')
+          .catch(function(err){
+            console.error(err);
+        });
+    </script>
   </body>
 </html>
