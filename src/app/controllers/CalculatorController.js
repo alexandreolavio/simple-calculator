@@ -107,6 +107,7 @@ class CalculatorController {
         this._clearEntry();
         break;
       case 'ponto':
+        this._addDot();
         break;
       case 'igual':
         this._calculate();
@@ -209,6 +210,14 @@ class CalculatorController {
       }, 1);
     }
     return 0;
+  }
+
+  _addDot() {
+    if (typeof this._lastOperation === 'string' && this._lastOperation.split('').indexOf('.')) return;
+    if (this._isOperator(this._lastOperation) || !this._lastOperation) this._pushOperation('0.');
+    else this._lastOperation = `${this._lastOperation}.`;
+
+    this._updateDisplayCalcView();
   }
 
   get _lastOperation() {
