@@ -1,7 +1,9 @@
 import DisplayDateView from '../views/DisplayDateView';
 import DisplayTimeView from '../views/DisplayTimeView';
 import DateTimeHelper from '../helpers/DateTimeHelper';
+import AudioModel from '../models/AudioModel';
 
+const _audio = new AudioModel('../sounds/click.mp3');
 const $ = document.querySelector.bind(document);
 const $All = document.querySelectorAll.bind(document);
 
@@ -14,6 +16,24 @@ export default class CalculatorController {
     this._scheduleDisplayDateTime();
     this._initButtonEvents();
     this._initKeyboardEvents();
+    this._initAudioButtonEvent();
+  }
+
+  _execBtn(value) {
+    _audio.play();
+
+    switch (value) {
+      case 'ac':
+        break;
+      case 'ce':
+        break;
+      case 'ponto':
+        break;
+      case 'igual':
+        break;
+      default:
+        break;
+    }
   }
 
   _scheduleDisplayDateTime() {
@@ -35,7 +55,7 @@ export default class CalculatorController {
     buttons.forEach((btn) => {
       this._addEventListenerAll(btn, 'click drag', () => {
         const textBtn = btn.className.baseVal.replace('btn-', '');
-        console.log(textBtn);
+        this._execBtn(textBtn);
       });
 
       this._addEventListenerAll(btn, 'mouseover mouseup mousedown', () => {
@@ -50,7 +70,7 @@ export default class CalculatorController {
 
   _initKeyboardEvents() {
     document.addEventListener('keyup', (e) => {
-      console.log(e.key);
+      _audio.play();
 
       switch (e.key) {
         case 'Escape':
@@ -66,6 +86,16 @@ export default class CalculatorController {
         default:
           break;
       }
+    });
+  }
+
+  _initAudioButtonEvent() {
+    $All('.btn-ac').forEach((btn) => {
+      btn.addEventListener('dblclick', () => {
+        _audio.enable = !_audio.enable;
+
+        console.log(_audio.enable);
+      });
     });
   }
 }

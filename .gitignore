@@ -43,5 +43,5 @@ jspm_packages
 # Output of 'npm pack'
 *.tgz
 
-# Output of babel and webpack
+# Output of babel
 bundle

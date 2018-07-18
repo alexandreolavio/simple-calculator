@@ -7,7 +7,7 @@
     "clear": "rimraf app/bundle",
     "prepush": "npm run lint",
     "lint": "./node_modules/.bin/eslint app/**/*.js",
-    "build": "npm run clear && babel app/src -d bundle --source-maps",
+    "build": "npm run clear && babel app/src -d app/bundle --source-maps",
     "watch": "npm run build -- --watch",
     "start": "npm run build && http-server"
   },
