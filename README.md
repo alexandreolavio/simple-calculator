@@ -10,7 +10,8 @@
 39+ ✔ | 42+ ✔ | 29+ ✔ | 10.1+ ✔ | Nope ✘ |
 
 ## How to Run
-Install the dependencies with `npm i`.
+1. Install the dependencies with `npm i`.
+2. Run `npm start`
 
 > To turn on the sound just double click the `AC` button;
 
