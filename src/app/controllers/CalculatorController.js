@@ -37,76 +37,13 @@ class CalculatorController {
     this._copyToClipboard();
   }
 
-  _scheduleDisplayDateTime() {
-    this._setDisplayDateTime();
-
-    setInterval(() => {
-      this._setDisplayDateTime();
-    }, 1000);
-  }
-
-  _setDisplayDateTime() {
-    _dataView.update(DateTimeHelper.currentDateFormat());
-    _timeView.update(DateTimeHelper.currentTimeFormat());
-  }
-
-  _initButtonEvents() {
-    const buttons = $All('#buttons > g, #parts > g');
-
-    buttons.forEach((btn) => {
-      this._addEventListenerAll(btn, 'click drag', () => {
-        const textBtn = btn.className.baseVal.replace('btn-', '');
-        this._execBtn(textBtn);
-      });
-
-      this._addEventListenerAll(btn, 'mouseover mouseup mousedown', () => {
-        btn.style.cursor = 'pointer';
-      });
-    });
-  }
-
-  _addEventListenerAll(element, events, fn) {
-    events.split(' ').forEach(event => element.addEventListener(event.trim(), fn, false));
-  }
-
-  _initAudioButtonEvent() {
-    $All('.btn-ac').forEach((btn) => {
-      btn.addEventListener('dblclick', () => {
-        _audio.enable = !_audio.enable;
-      });
-    });
-  }
-
-  _initKeyboardEvents() {
-    document.addEventListener('keyup', (e) => {
-      _audio.play();
-      this._execEvent(e.key, e.ctrlKey);
-    });
-  }
-
-  _initPastFromClipboardEvent() {
-    document.addEventListener('paste', (e) => {
-      const text = e.clipboardData.getData('Text');
-      _calcView.update(parseFloat(text.trim()));
-    });
-  }
-
-  _copyToClipboard() {
-    const input = document.createElement('input');
-    input.value = _calcView.value;
-    document.body.appendChild(input);
-    input.select();
-    document.execCommand('Copy');
-    input.remove();
-  }
-
-  _execBtn(value) {
+  execBtn(value) {
     _audio.play();
 
-    this._execEvent(value);
+    this.execEvent(value);
   }
 
-  _execEvent(value, ctrlKey) {
+  execEvent(value, ctrlKey) {
     switch (value) {
       case 'Escape':
       case 'ac':
@@ -132,9 +69,72 @@ class CalculatorController {
       default: {
         const op = _mapOperations.get(value);
         const isNum = !isNaN(value);
-        if (op || isNum) this._addOperation(op || value);
+        if (op || isNum || _operators.has(value)) this._addOperation(op || value);
       }
     }
+  }
+
+  _initKeyboardEvents() {
+    document.addEventListener('keyup', (e) => {
+      _audio.play();
+      this.execEvent(e.key, e.ctrlKey);
+    });
+  }
+
+  _scheduleDisplayDateTime() {
+    this._setDisplayDateTime();
+
+    setInterval(() => {
+      this._setDisplayDateTime();
+    }, 1000);
+  }
+
+  _setDisplayDateTime() {
+    _dataView.update(DateTimeHelper.currentDateFormat());
+    _timeView.update(DateTimeHelper.currentTimeFormat());
+  }
+
+  _initButtonEvents() {
+    const buttons = $All('#buttons > g, #parts > g');
+
+    buttons.forEach((btn) => {
+      this._addEventListenerAll(btn, 'click drag', () => {
+        const textBtn = btn.className.baseVal.replace('btn-', '');
+        this.execBtn(textBtn);
+      });
+
+      this._addEventListenerAll(btn, 'mouseover mouseup mousedown', () => {
+        btn.style.cursor = 'pointer';
+      });
+    });
+  }
+
+  _addEventListenerAll(element, events, fn) {
+    events.split(' ').forEach(event => element.addEventListener(event.trim(), fn, false));
+  }
+
+  _initAudioButtonEvent() {
+    $All('.btn-ac').forEach((btn) => {
+      btn.addEventListener('dblclick', () => {
+        _audio.enable = !_audio.enable;
+      });
+    });
+  }
+
+  _initPastFromClipboardEvent() {
+    document.addEventListener('paste', (e) => {
+      const text = e.clipboardData.getData('Text');
+      _calcView.update(parseFloat(text.trim()));
+    });
+  }
+
+  _copyToClipboard() {
+    const input = document.createElement('input');
+    input.value = _calcView.value;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('Copy');
+    input.remove();
   }
 
   _addOperation(value) {
