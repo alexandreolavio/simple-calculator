@@ -101,8 +101,10 @@ class CalculatorController {
 
     switch (value) {
       case 'ac':
+        this._clearAll();
         break;
       case 'ce':
+        this._clearEntry();
         break;
       case 'ponto':
         break;
@@ -120,14 +122,14 @@ class CalculatorController {
         this._lastOperation = value;
       } else {
         this._pushOperation(parseInt(value, 10));
-        this._setLastNumberToDisplay();
+        this._updateDisplayCalcView();
       }
     } else if (this._isOperator(value)) {
       this._pushOperation(value);
     } else {
       this._lastOperation = `${this._lastOperation}${value}`;
 
-      this._setLastNumberToDisplay();
+      this._updateDisplayCalcView();
     }
   }
 
@@ -139,11 +141,11 @@ class CalculatorController {
     this._operation.push(value);
   }
 
-  _setLastNumberToDisplay() {
-    let lastNumber = this._getLastItem(false);
-    if (!lastNumber) lastNumber = 0;
+  _updateDisplayCalcView() {
+    let lastItem = this._getLastItem(false);
+    if (!lastItem) lastItem = 0;
 
-    _calcView.update(lastNumber);
+    _calcView.update(lastItem);
   }
 
   _getLastItem(isOperator = true) {
@@ -159,6 +161,18 @@ class CalculatorController {
     if (!lastItem) lastItem = (isOperator) ? this._lastOperator : this._lastNumber;
 
     return lastItem;
+  }
+
+  _clearAll() {
+    this._operation = [];
+    this._lastNumber = '';
+    this._lastOperator = '';
+    this._updateDisplayCalcView();
+  }
+
+  _clearEntry() {
+    this._operation.pop();
+    this._updateDisplayCalcView();
   }
 
   get _lastOperation() {
