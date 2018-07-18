@@ -2,12 +2,12 @@
   "name": "simple-calculator",
   "version": "1.0.0",
   "description": "A simple calculator to demonstrate the use of ES6",
-  "main": "app/index.js",
+  "main": "src/app/index.js",
   "scripts": {
-    "clear": "rimraf app/bundle",
+    "clear": "rimraf src/bundle",
     "prepush": "npm run lint",
-    "lint": "./node_modules/.bin/eslint app/**/*.js",
-    "build": "npm run clear && babel app/src -d app/bundle --source-maps",
+    "lint": "./node_modules/.bin/eslint src/app/**/*.js",
+    "build": "npm run clear && babel src/app -d src/bundle --source-maps",
     "watch": "npm run build -- --watch",
     "start": "npm run build && http-server"
   },

@@ -3,7 +3,7 @@ import DisplayTimeView from '../views/DisplayTimeView';
 import DateTimeHelper from '../helpers/DateTimeHelper';
 import AudioModel from '../models/AudioModel';
 
-const _audio = new AudioModel('../sounds/click.mp3');
+const _audio = new AudioModel('../../../sounds/click.mp3');
 const $ = document.querySelector.bind(document);
 const $All = document.querySelectorAll.bind(document);
 
