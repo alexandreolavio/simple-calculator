@@ -1,5 +1,6 @@
 import DisplayDateView from '../views/DisplayDateView';
 import DisplayTimeView from '../views/DisplayTimeView';
+import DateTimeHelper from '../helpers/DateTimeHelper';
 
 const $ = document.querySelector.bind(document);
 
@@ -8,7 +9,11 @@ const _timeView = new DisplayTimeView($('#hora'));
 
 export default class CalculatorController {
   constructor() {
-    _dataView.update(new Date().toLocaleDateString());
-    _timeView.update(new Date().toLocaleTimeString());
+    this._setDisplayDateTime();
+  }
+
+  _setDisplayDateTime() {
+    _dataView.update(DateTimeHelper.currentDateFormat());
+    _timeView.update(DateTimeHelper.currentTimeFormat());
   }
 }
