@@ -44,4 +44,4 @@ jspm_packages
 *.tgz
 
 # Output of babel and webpack
-app/src/bundle
+bundle
