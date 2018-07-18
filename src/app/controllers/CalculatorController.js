@@ -33,6 +33,8 @@ class CalculatorController {
     this._initButtonEvents();
     this._initKeyboardEvents();
     this._initAudioButtonEvent();
+    this._initPastFromClipboardEvent();
+    this._copyToClipboard();
   }
 
   _scheduleDisplayDateTime() {
@@ -78,8 +80,24 @@ class CalculatorController {
   _initKeyboardEvents() {
     document.addEventListener('keyup', (e) => {
       _audio.play();
-      this._execEvent(e.key);
+      this._execEvent(e.key, e.ctrlKey);
     });
+  }
+
+  _initPastFromClipboardEvent() {
+    document.addEventListener('paste', (e) => {
+      const text = e.clipboardData.getData('Text');
+      _calcView.update(parseFloat(text.trim()));
+    });
+  }
+
+  _copyToClipboard() {
+    const input = document.createElement('input');
+    input.value = _calcView.value;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('Copy');
+    input.remove();
   }
 
   _execBtn(value) {
@@ -88,7 +106,7 @@ class CalculatorController {
     this._execEvent(value);
   }
 
-  _execEvent(value) {
+  _execEvent(value, ctrlKey) {
     switch (value) {
       case 'Escape':
       case 'ac':
@@ -108,9 +126,14 @@ class CalculatorController {
       case 'igual':
         this._calculate();
         break;
-      default:
-        this._addOperation(_mapOperations.get(value) || value);
+      case 'c':
+        if (ctrlKey) this._copyToClipboard();
         break;
+      default: {
+        const op = _mapOperations.get(value);
+        const isNum = !isNaN(value);
+        if (op || isNum) this._addOperation(op || value);
+      }
     }
   }
 
